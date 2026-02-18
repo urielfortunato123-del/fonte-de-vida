@@ -80,19 +80,19 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, traditionId } = await req.json();
+    const { messages, traditionId, lang } = await req.json();
 
-    if (!messages || !Array.isArray(messages) || !traditionId) {
-      return new Response(JSON.stringify({ error: "Mensagens e tradição são obrigatórias." }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+    if (!messages || !traditionId) {
+      return new Response(JSON.stringify({ error: "Missing required fields" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-    if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
-
     const traditionPrompt = traditionPrompts[traditionId] || traditionPrompts.explorar;
+
+    const languageInstruction = lang && lang !== "pt-BR"
+      ? `- Respond in ${lang}. Use the appropriate language for all responses.`
+      : `- Responda em português brasileiro`;
 
     const systemPrompt = `${traditionPrompt}
 
@@ -100,11 +100,11 @@ REGRAS GERAIS:
 - Sempre cite fontes reais (textos sagrados, autores, obras)
 - NUNCA invente doutrinas ou citações
 - Seja respeitoso e acolhedor
-- Responda em português brasileiro
+${languageInstruction}
 - Seja conciso mas informativo
-- Se não souber algo com certeza, diga "não tenho certeza" ao invés de inventar
+- Se não souber algo com certeza, diga que não tem certeza ao invés de inventar
 - Não substitua um líder religioso — sugira consultar quando apropriado
-- Se detectar que a pessoa está em sofrimento, ofereça acolhimento e sugira o CVV (188)`;
+- Se detectar que a pessoa está em sofrimento, ofereça acolhimento e sugira ajuda profissional`;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
