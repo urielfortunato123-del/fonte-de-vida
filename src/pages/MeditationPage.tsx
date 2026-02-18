@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Play, ChevronLeft } from "lucide-react";
+import { ArrowLeft, Play } from "lucide-react";
 import { traditions } from "@/data/traditions";
 
 interface MeditationVideo {
@@ -68,10 +69,11 @@ const meditationVideos: Record<string, MeditationVideo[]> = {
 
 const MeditationPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [selectedTradition, setSelectedTradition] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<MeditationVideo | null>(null);
 
-  const tradition = traditions.find((t) => t.id === selectedTradition);
+  const tradition = traditions.find((trad) => trad.id === selectedTradition);
   const videos = selectedTradition ? meditationVideos[selectedTradition] || meditationVideos.explorar : [];
 
   return (
@@ -88,24 +90,23 @@ const MeditationPage = () => {
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          {selectedVideo ? "Escolher tema" : selectedTradition ? "Escolher tradição" : "Início"}
+          {selectedVideo ? t("meditation.choose_theme") : selectedTradition ? t("home.choose_tradition") : t("nav.home")}
         </motion.button>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-3xl font-bold text-foreground mb-2">
-            🧘 Meditação
+            🧘 {t("meditation.title")}
           </h1>
           <p className="text-sm text-muted-foreground mb-8">
             {!selectedTradition
-              ? "Escolha uma tradição para encontrar meditações guiadas."
+              ? t("meditation.choose_tradition")
               : !selectedVideo
-              ? `Escolha um tema — ${tradition?.icon} ${tradition?.name}`
+              ? `${t("meditation.choose_theme")} — ${tradition?.icon} ${t(`traditions.${tradition?.id}`)}`
               : `${tradition?.icon} ${selectedVideo.label}`}
           </p>
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {/* Step 1: Traditions */}
           {!selectedTradition && (
             <motion.div
               key="traditions"
@@ -114,20 +115,20 @@ const MeditationPage = () => {
               exit={{ opacity: 0, y: -20 }}
               className="grid grid-cols-1 gap-3 sm:grid-cols-2"
             >
-              {traditions.map((t, i) => (
+              {traditions.map((trad, i) => (
                 <motion.button
-                  key={t.id}
+                  key={trad.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  onClick={() => setSelectedTradition(t.id)}
+                  onClick={() => setSelectedTradition(trad.id)}
                   className="flex items-center gap-4 rounded-xl border border-border bg-card/50 p-5 text-left transition-all hover:border-primary/30 hover:bg-card/80"
                 >
-                  <span className="text-3xl">{t.icon}</span>
+                  <span className="text-3xl">{trad.icon}</span>
                   <div>
-                    <h3 className="font-display font-semibold text-foreground">{t.name}</h3>
+                    <h3 className="font-display font-semibold text-foreground">{t(`traditions.${trad.id}`)}</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {meditationVideos[t.id]?.length || 0} meditações
+                      {meditationVideos[trad.id]?.length || 0} {t("meditation.meditations")}
                     </p>
                   </div>
                 </motion.button>
@@ -135,7 +136,6 @@ const MeditationPage = () => {
             </motion.div>
           )}
 
-          {/* Step 2: Themes */}
           {selectedTradition && !selectedVideo && (
             <motion.div
               key="themes"
@@ -167,7 +167,7 @@ const MeditationPage = () => {
                   <div>
                     <h3 className="font-display font-semibold text-foreground">{v.label}</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {tradition?.icon} {tradition?.name}
+                      {tradition?.icon} {t(`traditions.${tradition?.id}`)}
                     </p>
                   </div>
                 </motion.button>
@@ -175,7 +175,6 @@ const MeditationPage = () => {
             </motion.div>
           )}
 
-          {/* Step 3: Embedded Player */}
           {selectedVideo && (
             <motion.div
               key="player"
@@ -220,7 +219,7 @@ const MeditationPage = () => {
               </div>
 
               <p className="text-center text-[10px] text-muted-foreground/40">
-                Vídeos do YouTube. O conteúdo é de responsabilidade dos criadores originais.
+                {t("meditation.disclaimer")}
               </p>
             </motion.div>
           )}

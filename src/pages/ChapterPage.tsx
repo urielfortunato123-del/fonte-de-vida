@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft, Info } from "lucide-react";
 import { traditions } from "@/data/traditions";
@@ -11,8 +12,9 @@ const ChapterPage = () => {
     chapterId: string;
   }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const tradition = traditions.find((t) => t.id === traditionId);
+  const tradition = traditions.find((trad) => trad.id === traditionId);
   const lib = getLibraryByTradition(traditionId || "");
   const work = lib?.works.find((w) => w.id === workId);
   const chapter = work?.chapters.find((c) => c.id === chapterId);
@@ -20,7 +22,7 @@ const ChapterPage = () => {
   if (!tradition || !work || !chapter) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Capítulo não encontrado.</p>
+        <p className="text-muted-foreground">{t("library_page.not_found")}</p>
       </div>
     );
   }
@@ -44,14 +46,13 @@ const ChapterPage = () => {
           className="mb-8"
         >
           <p className="text-xs text-primary uppercase tracking-widest mb-1">
-            {tradition.icon} {tradition.name} · {work.name}
+            {tradition.icon} {t(`traditions.${tradition.id}`)} · {work.name}
           </p>
           <h1 className="font-display text-3xl font-bold text-foreground">
             {chapter.number}. {chapter.name}
           </h1>
         </motion.div>
 
-        {/* Commentary */}
         {chapter.commentary && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -66,7 +67,6 @@ const ChapterPage = () => {
           </motion.div>
         )}
 
-        {/* Verses */}
         <div className="space-y-1">
           {chapter.verses.map((verse, i) => (
             <motion.div

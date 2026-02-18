@@ -1,4 +1,5 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft, ScrollText } from "lucide-react";
 import { traditions } from "@/data/traditions";
@@ -7,15 +8,16 @@ import { getLibraryByTradition } from "@/data/library";
 const WorkPage = () => {
   const { traditionId, workId } = useParams<{ traditionId: string; workId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const tradition = traditions.find((t) => t.id === traditionId);
+  const tradition = traditions.find((trad) => trad.id === traditionId);
   const lib = getLibraryByTradition(traditionId || "");
   const work = lib?.works.find((w) => w.id === workId);
 
   if (!tradition || !work) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Obra não encontrada.</p>
+        <p className="text-muted-foreground">{t("library_page.not_found")}</p>
       </div>
     );
   }
@@ -30,7 +32,7 @@ const WorkPage = () => {
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Biblioteca
+          {t("library_page.title")}
         </motion.button>
 
         <motion.div
@@ -38,7 +40,7 @@ const WorkPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <p className="text-xs text-primary uppercase tracking-widest mb-1">{tradition.icon} {tradition.name}</p>
+          <p className="text-xs text-primary uppercase tracking-widest mb-1">{tradition.icon} {t(`traditions.${tradition.id}`)}</p>
           <h1 className="font-display text-3xl font-bold text-foreground mb-1">{work.name}</h1>
           <p className="text-sm text-muted-foreground">{work.description}</p>
         </motion.div>
@@ -63,7 +65,7 @@ const WorkPage = () => {
                     {chapter.number}. {chapter.name}
                   </h3>
                   <p className="text-[11px] text-muted-foreground/60 mt-1">
-                    {chapter.verses.length} {chapter.verses.length === 1 ? "versículo" : "versículos"}
+                    {chapter.verses.length} {chapter.verses.length === 1 ? t("library_page.chapter") : t("library_page.chapters")}
                   </p>
                 </div>
               </Link>

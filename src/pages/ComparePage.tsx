@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, GitCompareArrows, Send, Loader2, AlertCircle } from "lucide-react";
@@ -10,6 +11,7 @@ const COMPARE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/compare-r
 
 const ComparePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [question, setQuestion] = useState("");
   const [selected, setSelected] = useState<string[]>(["catolico", "evangelico", "islamico"]);
   const [answer, setAnswer] = useState("");
@@ -18,14 +20,14 @@ const ComparePage = () => {
 
   const toggleTradition = (id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((tid) => tid !== id) : [...prev, id]
     );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim() || selected.length < 2) {
-      toast({ title: "Selecione ao menos 2 tradições e faça uma pergunta.", variant: "destructive" });
+      toast({ title: t("compare.error_min"), variant: "destructive" });
       return;
     }
 
@@ -44,7 +46,7 @@ const ComparePage = () => {
 
       if (!resp.ok || !resp.body) {
         const errorData = await resp.json().catch(() => ({}));
-        toast({ title: errorData.error || "Erro ao consultar a IA.", variant: "destructive" });
+        toast({ title: errorData.error || t("compare.error_ai"), variant: "destructive" });
         setIsLoading(false);
         return;
       }
@@ -64,17 +66,11 @@ const ComparePage = () => {
         while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
           let line = textBuffer.slice(0, newlineIndex);
           textBuffer = textBuffer.slice(newlineIndex + 1);
-
           if (line.endsWith("\r")) line = line.slice(0, -1);
           if (line.startsWith(":") || line.trim() === "") continue;
           if (!line.startsWith("data: ")) continue;
-
           const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") {
-            streamDone = true;
-            break;
-          }
-
+          if (jsonStr === "[DONE]") { streamDone = true; break; }
           try {
             const parsed = JSON.parse(jsonStr);
             const content = parsed.choices?.[0]?.delta?.content as string | undefined;
@@ -90,7 +86,6 @@ const ComparePage = () => {
         }
       }
 
-      // Final flush
       if (textBuffer.trim()) {
         for (let raw of textBuffer.split("\n")) {
           if (!raw) continue;
@@ -111,13 +106,13 @@ const ComparePage = () => {
       }
     } catch (err) {
       console.error(err);
-      toast({ title: "Erro de conexão. Tente novamente.", variant: "destructive" });
+      toast({ title: t("compare.error_connection"), variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const comparableTraditions = traditions.filter((t) => t.id !== "explorar");
+  const comparableTraditions = traditions.filter((trad) => trad.id !== "explorar");
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,7 +124,7 @@ const ComparePage = () => {
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Início
+          {t("nav.home")}
         </motion.button>
 
         <motion.div
@@ -140,15 +135,14 @@ const ComparePage = () => {
           <div className="flex items-center gap-3 mb-2">
             <GitCompareArrows className="h-6 w-6 text-primary" />
             <h1 className="font-display text-3xl font-bold text-foreground">
-              Comparar Religiões
+              {t("compare.title")}
             </h1>
           </div>
           <p className="text-sm text-muted-foreground">
-            Faça uma pergunta e veja a resposta sob diferentes visões — sem juízo de valor.
+            {t("compare.subtitle")}
           </p>
         </motion.div>
 
-        {/* Tradition selection */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -156,27 +150,26 @@ const ComparePage = () => {
           className="mb-6"
         >
           <p className="text-xs text-muted-foreground mb-3 uppercase tracking-widest">
-            Selecione as tradições (mín. 2)
+            {t("compare.select_traditions")}
           </p>
           <div className="flex flex-wrap gap-2">
-            {comparableTraditions.map((t) => (
+            {comparableTraditions.map((trad) => (
               <button
-                key={t.id}
-                onClick={() => toggleTradition(t.id)}
+                key={trad.id}
+                onClick={() => toggleTradition(trad.id)}
                 className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-all ${
-                  selected.includes(t.id)
+                  selected.includes(trad.id)
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border bg-card/30 text-muted-foreground hover:border-primary/30"
                 }`}
               >
-                <span className="text-base">{t.icon}</span>
-                {t.name}
+                <span className="text-base">{trad.icon}</span>
+                {t(`traditions.${trad.id}`)}
               </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Question form */}
         <motion.form
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -187,7 +180,7 @@ const ComparePage = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Ex: O que acontece após a morte?"
+              placeholder={t("compare.placeholder")}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               disabled={isLoading}
@@ -198,16 +191,11 @@ const ComparePage = () => {
               disabled={isLoading || !question.trim() || selected.length < 2}
               className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity disabled:opacity-30"
             >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </button>
           </div>
         </motion.form>
 
-        {/* Answer */}
         {answer && (
           <motion.div
             ref={answerRef}
@@ -227,7 +215,7 @@ const ComparePage = () => {
             {isLoading && (
               <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
                 <Loader2 className="h-3 w-3 animate-spin" />
-                Gerando comparação...
+                {t("compare.generating")}
               </div>
             )}
           </motion.div>
@@ -242,7 +230,7 @@ const ComparePage = () => {
           >
             <AlertCircle className="h-8 w-8 text-muted-foreground/30" />
             <p className="text-sm text-muted-foreground/60">
-              Selecione as tradições e faça sua pergunta para ver a comparação.
+              {t("compare.empty_state")}
             </p>
           </motion.div>
         )}

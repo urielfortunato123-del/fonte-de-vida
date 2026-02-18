@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import type { Tradition } from "@/data/traditions";
 
 interface TraditionCardProps {
@@ -8,6 +9,8 @@ interface TraditionCardProps {
 }
 
 const TraditionCard = ({ tradition, onClick, index }: TraditionCardProps) => {
+  const { t } = useTranslation();
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 20 }}
@@ -20,14 +23,14 @@ const TraditionCard = ({ tradition, onClick, index }: TraditionCardProps) => {
     >
       <span className="text-4xl">{tradition.icon}</span>
       <h3 className="font-display text-lg font-semibold text-foreground">
-        {tradition.name}
+        {t(`traditions.${tradition.id}`)}
       </h3>
       <p className="text-xs text-muted-foreground leading-relaxed">
         {tradition.description}
       </p>
       {tradition.id === "explorar" && (
         <span className="absolute -top-2 -right-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
-          Novo
+          New
         </span>
       )}
     </motion.button>

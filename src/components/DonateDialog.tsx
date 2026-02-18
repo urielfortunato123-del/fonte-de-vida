@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Heart, Copy, Check } from "lucide-react";
 import {
   Dialog,
@@ -15,6 +16,7 @@ const PIX_KEY = "00020126360014BR.GOV.BCB.PIX0114+551497600662052040000530398658
 
 const DonateDialog = () => {
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(PIX_KEY);
@@ -27,17 +29,17 @@ const DonateDialog = () => {
       <DialogTrigger asChild>
         <button className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10">
           <Heart className="h-3.5 w-3.5" />
-          Ajude o app ficar ativo
+          {t("home.donate")}
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-display">
             <Heart className="h-5 w-5 text-primary" />
-            Contribua com o desenvolvedor
+            {t("donate.title")}
           </DialogTitle>
           <DialogDescription>
-            Sua contribuição ajuda a manter o Fonte de Vida ativo e gratuito para todos.
+            {t("donate.subtitle")}
           </DialogDescription>
         </DialogHeader>
 
@@ -47,7 +49,7 @@ const DonateDialog = () => {
           </div>
 
           <p className="text-center text-sm font-medium text-foreground">
-            Pix Copia-e-cola:
+            {t("donate.pix_label")}
           </p>
 
           <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 p-3">
@@ -70,12 +72,12 @@ const DonateDialog = () => {
 
           {copied && (
             <p className="text-center text-xs font-medium text-primary">
-              Chave copiada! ✓
+              {t("donate.copied")}
             </p>
           )}
 
           <p className="text-center text-xs text-muted-foreground/70">
-            Qualquer valor é bem-vindo. Obrigado por apoiar! 🙏
+            {t("donate.thanks")}
           </p>
         </div>
       </DialogContent>
