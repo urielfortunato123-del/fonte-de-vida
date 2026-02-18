@@ -10,6 +10,7 @@ import LibraryPage from "./pages/LibraryPage";
 import WorkPage from "./pages/WorkPage";
 import ChapterPage from "./pages/ChapterPage";
 import ComparePage from "./pages/ComparePage";
+import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/library/:traditionId/:workId/:chapterId" element={<ChapterPage />} />
           <Route path="/crise" element={<CrisePage />} />
           <Route path="/comparar" element={<ComparePage />} />
+          <Route path="/instalar" element={<InstallPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
