@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, Send, Loader2, MessageCircle, Trash2 } from "lucide-react";
@@ -25,12 +26,13 @@ const suggestedQuestions: Record<string, string[]> = {
 const TraditionChatPage = () => {
   const { traditionId } = useParams<{ traditionId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const tradition = traditions.find((t) => t.id === traditionId);
+  const tradition = traditions.find((trad) => trad.id === traditionId);
   const suggestions = suggestedQuestions[traditionId || ""] || suggestedQuestions.explorar;
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const TraditionChatPage = () => {
   if (!tradition) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Tradição não encontrada.</p>
+        <p className="text-muted-foreground">{t("tradition_page.not_found")}</p>
       </div>
     );
   }
@@ -71,7 +73,7 @@ const TraditionChatPage = () => {
 
       if (!resp.ok || !resp.body) {
         const errorData = await resp.json().catch(() => ({}));
-        toast({ title: errorData.error || "Erro ao consultar a IA.", variant: "destructive" });
+        toast({ title: errorData.error || t("chat.error_ai"), variant: "destructive" });
         setIsLoading(false);
         return;
       }
@@ -117,7 +119,6 @@ const TraditionChatPage = () => {
         }
       }
 
-      // Final flush
       if (textBuffer.trim()) {
         for (let raw of textBuffer.split("\n")) {
           if (!raw) continue;
@@ -135,7 +136,7 @@ const TraditionChatPage = () => {
       }
     } catch (err) {
       console.error(err);
-      toast({ title: "Erro de conexão. Tente novamente.", variant: "destructive" });
+      toast({ title: t("chat.error_connection"), variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -148,7 +149,6 @@ const TraditionChatPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
           <button
@@ -160,15 +160,15 @@ const TraditionChatPage = () => {
           <span className="text-2xl">{tradition.icon}</span>
           <div className="min-w-0">
             <h1 className="font-display text-base font-semibold text-foreground truncate">
-              {tradition.name}
+              {t(`traditions.${tradition.id}`)}
             </h1>
-            <p className="text-[11px] text-muted-foreground">IA Conversacional</p>
+            <p className="text-[11px] text-muted-foreground">{t("chat.ai_label")}</p>
           </div>
           {messages.length > 0 && (
             <button
               onClick={() => setMessages([])}
               className="ml-auto text-muted-foreground/50 transition-colors hover:text-destructive"
-              title="Limpar conversa"
+              title={t("chat.clear")}
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -176,7 +176,6 @@ const TraditionChatPage = () => {
         </div>
       </header>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-4 py-6">
           {messages.length === 0 ? (
@@ -190,16 +189,15 @@ const TraditionChatPage = () => {
               </div>
               <div className="text-center">
                 <h2 className="font-display text-xl font-semibold text-foreground mb-2">
-                  Pergunte à IA
+                  {t("chat.ask_ai")}
                 </h2>
                 <p className="text-sm text-muted-foreground max-w-md">
-                  Faça perguntas sobre {tradition.name.toLowerCase()} e receba respostas
-                  fundamentadas em fontes reais.
+                  {t("chat.ask_about", { tradition: t(`traditions.${tradition.id}`).toLowerCase() })}
                 </p>
               </div>
               <div className="w-full max-w-md space-y-2">
                 <p className="text-xs text-muted-foreground/60 uppercase tracking-widest text-center">
-                  Sugestões
+                  {t("chat.suggestions")}
                 </p>
                 {suggestions.map((q) => (
                   <button
@@ -258,14 +256,13 @@ const TraditionChatPage = () => {
         </div>
       </div>
 
-      {/* Input */}
       <div className="sticky bottom-0 border-t border-border bg-background/80 backdrop-blur-md">
         <form onSubmit={handleSubmit} className="mx-auto flex max-w-3xl gap-2 px-4 py-3">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Faça sua pergunta..."
+            placeholder={t("chat.placeholder")}
             disabled={isLoading}
             className="flex-1 rounded-xl border border-border bg-card/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/20 disabled:opacity-50"
           />
@@ -278,7 +275,7 @@ const TraditionChatPage = () => {
           </button>
         </form>
         <p className="mx-auto max-w-3xl px-4 pb-2 text-center text-[10px] text-muted-foreground/40">
-          A IA pode cometer erros. Consulte sempre um líder religioso para orientação espiritual.
+          {t("chat.disclaimer")}
         </p>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft, Download, Smartphone, Check } from "lucide-react";
 
@@ -10,6 +11,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 const InstallPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
 
@@ -19,11 +21,9 @@ const InstallPage = () => {
       setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
     window.addEventListener("beforeinstallprompt", handler);
-
     if (window.matchMedia("(display-mode: standalone)").matches) {
       setIsInstalled(true);
     }
-
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
@@ -45,7 +45,7 @@ const InstallPage = () => {
           className="mb-8 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar
+          {t("nav.back")}
         </motion.button>
 
         <motion.div
@@ -55,16 +55,16 @@ const InstallPage = () => {
         >
           <Smartphone className="mx-auto mb-4 h-12 w-12 text-primary" />
           <h1 className="mb-3 font-display text-3xl font-bold text-foreground">
-            Instalar Fonte de Vida
+            {t("install.title")}
           </h1>
           <p className="mb-8 text-muted-foreground">
-            Tenha acesso rápido ao app direto da tela inicial do seu celular — funciona offline!
+            {t("install.subtitle")}
           </p>
 
           {isInstalled ? (
             <div className="flex items-center justify-center gap-2 rounded-xl bg-primary/10 p-4 text-primary">
               <Check className="h-5 w-5" />
-              <span className="font-medium">App já instalado!</span>
+              <span className="font-medium">{t("install.installed")}</span>
             </div>
           ) : deferredPrompt ? (
             <button
@@ -72,28 +72,28 @@ const InstallPage = () => {
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 font-display text-lg font-semibold text-primary-foreground transition-transform hover:scale-105"
             >
               <Download className="h-5 w-5" />
-              Instalar agora
+              {t("install.install_now")}
             </button>
           ) : (
             <div className="space-y-6 text-left">
               <div className="rounded-xl border border-border card-gradient p-5">
                 <h3 className="font-display text-base font-semibold text-foreground mb-3">
-                  📱 No iPhone (Safari)
+                  📱 {t("install.iphone_title")}
                 </h3>
                 <ol className="space-y-2 text-sm text-muted-foreground">
-                  <li>1. Toque no botão <strong className="text-foreground">Compartilhar</strong> (ícone de quadrado com seta)</li>
-                  <li>2. Role para baixo e toque em <strong className="text-foreground">Adicionar à Tela de Início</strong></li>
-                  <li>3. Toque em <strong className="text-foreground">Adicionar</strong></li>
+                  <li>1. {t("install.iphone_1")}</li>
+                  <li>2. {t("install.iphone_2")}</li>
+                  <li>3. {t("install.iphone_3")}</li>
                 </ol>
               </div>
               <div className="rounded-xl border border-border card-gradient p-5">
                 <h3 className="font-display text-base font-semibold text-foreground mb-3">
-                  🤖 No Android (Chrome)
+                  🤖 {t("install.android_title")}
                 </h3>
                 <ol className="space-y-2 text-sm text-muted-foreground">
-                  <li>1. Toque no menu <strong className="text-foreground">⋮</strong> (três pontos)</li>
-                  <li>2. Toque em <strong className="text-foreground">Instalar app</strong> ou <strong className="text-foreground">Adicionar à tela inicial</strong></li>
-                  <li>3. Confirme a instalação</li>
+                  <li>1. {t("install.android_1")}</li>
+                  <li>2. {t("install.android_2")}</li>
+                  <li>3. {t("install.android_3")}</li>
                 </ol>
               </div>
             </div>

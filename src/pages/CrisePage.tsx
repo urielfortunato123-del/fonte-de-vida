@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Phone, Heart } from "lucide-react";
-
-const emergencyContacts = [
-  { name: "CVV – Centro de Valorização da Vida", number: "188", desc: "24h, gratuito" },
-  { name: "SAMU", number: "192", desc: "Emergência médica" },
-  { name: "Polícia Militar", number: "190", desc: "Emergência" },
-];
 
 const CrisePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const emergencyContacts = [
+    { name: t("crisis.cvv"), number: "188", desc: t("crisis.cvv_desc") },
+    { name: t("crisis.samu"), number: "192", desc: t("crisis.samu_desc") },
+    { name: t("crisis.police"), number: "190", desc: t("crisis.police_desc") },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -21,7 +23,7 @@ const CrisePage = () => {
           className="mb-8 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar
+          {t("nav.back")}
         </motion.button>
 
         <motion.div
@@ -31,10 +33,10 @@ const CrisePage = () => {
         >
           <Heart className="mx-auto mb-4 h-12 w-12 text-primary animate-pulse-gold" />
           <h1 className="mb-3 font-display text-3xl font-bold text-foreground">
-            Você não está sozinho
+            {t("crisis.title")}
           </h1>
           <p className="text-muted-foreground">
-            Se você está passando por um momento difícil, saiba que existem pessoas prontas para te ouvir.
+            {t("crisis.subtitle")}
           </p>
         </motion.div>
 
@@ -45,7 +47,7 @@ const CrisePage = () => {
           className="mb-8 rounded-xl border border-primary/20 bg-primary/5 p-6"
         >
           <blockquote className="font-display text-lg italic text-foreground">
-            "Mesmo na escuridão mais profunda, existe uma luz que nunca se apaga — ela está dentro de você."
+            "{t("crisis.quote")}"
           </blockquote>
         </motion.div>
 
@@ -77,7 +79,7 @@ const CrisePage = () => {
           transition={{ delay: 0.7 }}
           className="mt-8 text-center text-xs text-muted-foreground"
         >
-          Este app não substitui atendimento profissional. Procure ajuda especializada quando necessário.
+          {t("crisis.disclaimer")}
         </motion.p>
       </div>
     </div>

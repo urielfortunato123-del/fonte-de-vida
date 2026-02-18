@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowLeft, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ interface SearchResult {
 
 const SearchPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [selectedTraditions, setSelectedTraditions] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"all" | "verses" | "glossary">("all");
@@ -45,10 +47,9 @@ const SearchPage = () => {
 
     for (const tLib of library) {
       if (selectedTraditions.size > 0 && !selectedTraditions.has(tLib.traditionId)) continue;
-      const tradition = traditions.find((t) => t.id === tLib.traditionId);
+      const tradition = traditions.find((trad) => trad.id === tLib.traditionId);
       if (!tradition) continue;
 
-      // Search glossary
       if (activeTab !== "verses") {
         for (const entry of tLib.glossary) {
           if (entry.term.toLowerCase().includes(q) || entry.definition.toLowerCase().includes(q)) {
@@ -64,7 +65,6 @@ const SearchPage = () => {
         }
       }
 
-      // Search verses
       if (activeTab !== "glossary") {
         for (const work of tLib.works) {
           for (const chapter of work.chapters) {
@@ -87,8 +87,8 @@ const SearchPage = () => {
             }
           }
         }
+        if (found.length >= 100) break;
       }
-      if (found.length >= 100) break;
     }
 
     return found;
@@ -120,7 +120,7 @@ const SearchPage = () => {
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Início
+          {t("nav.home")}
         </motion.button>
 
         <motion.div
@@ -129,12 +129,12 @@ const SearchPage = () => {
           className="mb-8"
         >
           <h1 className="font-display text-3xl font-bold text-foreground mb-4">
-            🔍 Busca Global
+            🔍 {t("search.title")}
           </h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Pesquisar versículos e glossário..."
+              placeholder={t("search.placeholder")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="pl-10"
@@ -142,18 +142,18 @@ const SearchPage = () => {
             />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {traditions.map((t) => (
+            {traditions.map((trad) => (
               <button
-                key={t.id}
-                onClick={() => toggleTradition(t.id)}
+                key={trad.id}
+                onClick={() => toggleTradition(trad.id)}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                  selectedTraditions.has(t.id)
+                  selectedTraditions.has(trad.id)
                     ? "border-primary bg-primary/20 text-primary"
                     : "border-border bg-card/50 text-muted-foreground hover:border-primary/30"
                 }`}
               >
-                <span>{t.icon}</span>
-                {t.name}
+                <span>{trad.icon}</span>
+                {t(`traditions.${trad.id}`)}
               </button>
             ))}
             {selectedTraditions.size > 0 && (
@@ -161,7 +161,7 @@ const SearchPage = () => {
                 onClick={() => setSelectedTraditions(new Set())}
                 className="rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                Limpar filtros
+                {t("search.clear_filters")}
               </button>
             )}
           </div>
@@ -176,20 +176,20 @@ const SearchPage = () => {
                     : "text-muted-foreground hover:bg-card/80"
                 }`}
               >
-                {tab === "all" ? "Tudo" : tab === "verses" ? "📖 Versículos" : "📚 Glossário"}
+                {tab === "all" ? t("search.all") : tab === "verses" ? `📖 ${t("search.verses")}` : `📚 ${t("search.glossary")}`}
               </button>
             ))}
           </div>
           {query.trim().length > 0 && query.trim().length < 3 && (
             <p className="mt-2 text-xs text-muted-foreground">
-              Digite pelo menos 3 caracteres para buscar.
+              {t("search.min_chars")}
             </p>
           )}
           {query.trim().length >= 3 && (
             <p className="mt-2 text-xs text-muted-foreground">
               {results.length >= 100
-                ? "100+ resultados encontrados (mostrando os primeiros 100)"
-                : `${results.length} resultado${results.length !== 1 ? "s" : ""} encontrado${results.length !== 1 ? "s" : ""}`}
+                ? t("search.results_100")
+                : t(results.length === 1 ? "search.results_count" : "search.results_count_plural", { count: results.length })}
             </p>
           )}
         </motion.div>
@@ -232,7 +232,7 @@ const SearchPage = () => {
                     <span>{r.traditionIcon}</span>
                     <span className="font-medium">{r.traditionName}</span>
                     <span>·</span>
-                    <span className="text-primary font-medium">📚 Glossário</span>
+                    <span className="text-primary font-medium">📚 {t("search.glossary")}</span>
                   </div>
                   <p className="text-sm font-semibold text-foreground mb-1">
                     {highlightMatch(r.term!)}

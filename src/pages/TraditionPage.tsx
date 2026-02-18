@@ -1,18 +1,20 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, BookOpen, MessageCircle, Heart, Sparkles } from "lucide-react";
 import { traditions, dailyWords } from "@/data/traditions";
 
 const TraditionPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const tradition = traditions.find((t) => t.id === id);
+  const { t } = useTranslation();
+  const tradition = traditions.find((trad) => trad.id === id);
   const word = dailyWords.find((w) => w.tradition === id);
 
   if (!tradition) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Tradição não encontrada.</p>
+        <p className="text-muted-foreground">{t("tradition_page.not_found")}</p>
       </div>
     );
   }
@@ -22,7 +24,6 @@ const TraditionPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-4 py-8">
-        {/* Back */}
         <motion.button
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
@@ -30,10 +31,9 @@ const TraditionPage = () => {
           className="mb-8 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar
+          {t("nav.back")}
         </motion.button>
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -41,17 +41,16 @@ const TraditionPage = () => {
         >
           <span className="mb-4 inline-block text-6xl">{tradition.icon}</span>
           <h1 className="mb-2 font-display text-4xl font-bold text-foreground">
-            {tradition.name}
+            {t(`traditions.${tradition.id}`)}
           </h1>
           <p className="text-muted-foreground">{tradition.description}</p>
           {isExplore && (
             <p className="mt-3 text-sm text-primary italic">
-              Modo neutro — respostas acadêmicas, sem julgamento.
+              {t("tradition_page.neutral_mode")}
             </p>
           )}
         </motion.div>
 
-        {/* Daily word for this tradition */}
         {word && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +60,7 @@ const TraditionPage = () => {
           >
             <div className="mb-3 flex items-center gap-2 text-primary">
               <Sparkles className="h-4 w-4" />
-              <span className="text-xs font-medium uppercase tracking-widest">Ensinamento</span>
+              <span className="text-xs font-medium uppercase tracking-widest">{t("tradition_page.teaching")}</span>
             </div>
             <blockquote className="mb-3 font-display text-lg italic text-foreground">
               "{word.text}"
@@ -70,12 +69,11 @@ const TraditionPage = () => {
           </motion.div>
         )}
 
-        {/* Actions */}
         <div className="grid gap-3 sm:grid-cols-2">
           {[
-            { icon: BookOpen, label: "Biblioteca", desc: "Textos sagrados e comentários", disabled: false, route: `/library/${id}` },
-            { icon: MessageCircle, label: "Perguntar à IA", desc: "Converse com base nas fontes", disabled: false, route: `/chat/${id}` },
-            { icon: Heart, label: "Apoio Emocional", desc: "Mensagem de esperança + CVV 188", disabled: false, route: "/crise" },
+            { icon: BookOpen, label: t("tradition_page.library"), desc: t("tradition_page.library_desc"), disabled: false, route: `/library/${id}` },
+            { icon: MessageCircle, label: t("tradition_page.ask_ai"), desc: t("tradition_page.ask_ai_desc"), disabled: false, route: `/chat/${id}` },
+            { icon: Heart, label: t("tradition_page.emotional_support"), desc: t("tradition_page.emotional_support_desc"), disabled: false, route: "/crise" },
           ].map((action, i) => (
             <motion.button
               key={action.label}
@@ -94,7 +92,6 @@ const TraditionPage = () => {
               <div>
                 <h3 className="font-display text-base font-semibold text-foreground">{action.label}</h3>
                 <p className="text-xs text-muted-foreground">{action.desc}</p>
-                {action.disabled && <p className="mt-1 text-[10px] text-muted-foreground/60">Em breve</p>}
               </div>
             </motion.button>
           ))}

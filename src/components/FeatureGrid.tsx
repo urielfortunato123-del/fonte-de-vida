@@ -1,23 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { BookOpen, MessageCircle, Heart, GitCompareArrows, Brain } from "lucide-react";
-
-const features = [
-  { icon: BookOpen, title: "Biblioteca Espiritual", desc: "Textos sagrados de cada tradição", route: "/biblioteca" },
-  { icon: MessageCircle, title: "IA Conversacional", desc: "Pergunte e receba respostas com fontes", route: "/chat/explorar" },
-  { icon: Brain, title: "Meditação", desc: "Meditações guiadas por tradição", route: "/meditacao" },
-  { icon: GitCompareArrows, title: "Comparar Religiões", desc: "Veja visões diferentes sem juízo", route: "/comparar" },
-  { icon: Heart, title: "Modo Crise", desc: "Apoio emocional e contatos de ajuda", route: "/crise" },
-];
 
 const FeatureGrid = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: BookOpen, title: t("features.library"), desc: t("features.library_desc"), route: "/biblioteca" },
+    { icon: MessageCircle, title: t("features.chat"), desc: t("features.chat_desc"), route: "/chat/explorar" },
+    { icon: Brain, title: t("features.meditation"), desc: t("features.meditation_desc"), route: "/meditacao" },
+    { icon: GitCompareArrows, title: t("features.compare"), desc: t("features.compare_desc"), route: "/comparar" },
+    { icon: Heart, title: t("features.crisis"), desc: t("features.crisis_desc"), route: "/crise" },
+  ];
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {features.map((f, i) => (
         <motion.button
-          key={f.title}
+          key={f.route}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 + i * 0.1, duration: 0.4 }}

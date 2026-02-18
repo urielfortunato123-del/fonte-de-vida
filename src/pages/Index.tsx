@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { traditions } from "@/data/traditions";
 import TraditionCard from "@/components/TraditionCard";
 import DailyWord from "@/components/DailyWord";
 import FeatureGrid from "@/components/FeatureGrid";
 import DonateDialog from "@/components/DonateDialog";
+import LanguageSelector from "@/components/LanguageSelector";
 import { Search } from "lucide-react";
 import logoFountain from "@/assets/logo-fountain.png";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleTraditionClick = (id: string) => {
     navigate(`/tradition/${id}`);
@@ -30,6 +33,11 @@ const Index = () => {
       </div>
 
       <div className="relative mx-auto max-w-5xl px-4 py-12 md:px-6">
+        {/* Language selector */}
+        <div className="absolute right-4 top-4 md:right-6">
+          <LanguageSelector />
+        </div>
+
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -39,24 +47,24 @@ const Index = () => {
         >
           <motion.img
             src={logoFountain}
-            alt="Fonte de Vida"
+            alt={t("app.name")}
             className="mb-6 h-24 w-24 animate-float"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8 }}
           />
           <h1 className="mb-3 font-display text-5xl font-bold tracking-tight text-gold-gradient md:text-6xl">
-            Fonte de Vida
+            {t("app.name")}
           </h1>
           <p className="max-w-md text-base text-muted-foreground">
-            Conhecimento espiritual confiável, com respeito a todas as tradições.
+            {t("app.tagline")}
           </p>
           <Link
             to="/buscar"
             className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
           >
             <Search className="h-4 w-4" />
-            Buscar versículos
+            {t("nav.search_verses")}
           </Link>
         </motion.header>
 
@@ -68,13 +76,13 @@ const Index = () => {
             transition={{ delay: 0.3 }}
             className="mb-6 text-center font-display text-2xl font-semibold text-foreground"
           >
-            Escolha sua tradição
+            {t("home.choose_tradition")}
           </motion.h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
-            {traditions.map((t, i) => (
+            {traditions.map((trad, i) => (
               <TraditionCard
-                key={t.id}
-                tradition={t}
+                key={trad.id}
+                tradition={trad}
                 onClick={handleTraditionClick}
                 index={i}
               />
@@ -90,7 +98,7 @@ const Index = () => {
         {/* Features */}
         <section className="mb-16">
           <h2 className="mb-6 text-center font-display text-2xl font-semibold text-foreground">
-            O que você pode fazer
+            {t("home.what_you_can_do")}
           </h2>
           <FeatureGrid />
         </section>
@@ -103,17 +111,17 @@ const Index = () => {
               to="/instalar"
               className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
             >
-              📱 Instalar no celular
+              📱 {t("home.install_phone")}
             </Link>
           </div>
           <p className="text-xs text-muted-foreground">
-            Fonte de Vida · Conhecimento espiritual com respeito e confiança
+            {t("app.footer")}
           </p>
            <p className="mt-1 text-xs text-muted-foreground/60">
-             Em crise? Ligue 188 (CVV) · 190 · 192
+             {t("app.crisis_footer")}
            </p>
            <p className="mt-3 text-[11px] text-muted-foreground/40">
-             Desenvolvido por Uriel da Fonseca Fortunato
+             {t("app.developer")}
            </p>
         </footer>
       </div>

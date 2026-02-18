@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { dailyWords, dailyMeditations } from "@/data/traditions";
 import { Sparkles, Brain } from "lucide-react";
@@ -12,13 +13,14 @@ const getDayOfYear = () => {
 
 const DailyWord = () => {
   const [mode, setMode] = useState<"word" | "meditation">("word");
+  const { t } = useTranslation();
   const dayIndex = getDayOfYear();
 
   const word = dailyWords[dayIndex % dailyWords.length];
   const meditation = dailyMeditations[dayIndex % dailyMeditations.length];
 
   const current = mode === "word" ? word : meditation;
-  const label = mode === "word" ? "Palavra do Dia" : "Meditação do Dia";
+  const label = mode === "word" ? t("daily.word_of_day") : t("daily.meditation_of_day");
   const Icon = mode === "word" ? Sparkles : Brain;
 
   return (
@@ -48,7 +50,7 @@ const DailyWord = () => {
                 }`}
               >
                 <Sparkles className="h-3 w-3" />
-                Palavra
+                {t("daily.word")}
               </button>
               <button
                 onClick={() => setMode("meditation")}
@@ -59,7 +61,7 @@ const DailyWord = () => {
                 }`}
               >
                 <Brain className="h-3 w-3" />
-                Meditação
+                {t("daily.meditation")}
               </button>
             </div>
           </div>
