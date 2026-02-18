@@ -1,0 +1,4 @@
+project_id = "ijjilytqhsubygcmhvcv"
+
+[functions.compare-religions]
+verify_jwt = false
