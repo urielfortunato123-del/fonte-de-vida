@@ -5,6 +5,7 @@ import { traditions } from "@/data/traditions";
 import TraditionCard from "@/components/TraditionCard";
 import DailyWord from "@/components/DailyWord";
 import FeatureGrid from "@/components/FeatureGrid";
+import DonateDialog from "@/components/DonateDialog";
 import logoFountain from "@/assets/logo-fountain.png";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -88,7 +89,8 @@ const Index = () => {
 
         {/* Footer */}
         <footer className="border-t border-border pt-8 text-center">
-          <div className="mb-3">
+          <div className="mb-3 flex flex-wrap items-center justify-center gap-3">
+            <DonateDialog />
             <Link
               to="/instalar"
               className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
