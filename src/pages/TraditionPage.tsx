@@ -73,9 +73,9 @@ const TraditionPage = () => {
         {/* Actions */}
         <div className="grid gap-3 sm:grid-cols-2">
           {[
-            { icon: BookOpen, label: "Biblioteca", desc: "Textos sagrados e comentários", disabled: true },
-            { icon: MessageCircle, label: "Perguntar à IA", desc: "Converse com base nas fontes", disabled: true },
-            { icon: Heart, label: "Apoio Emocional", desc: "Mensagem de esperança + CVV 188", disabled: false },
+            { icon: BookOpen, label: "Biblioteca", desc: "Textos sagrados e comentários", disabled: false, route: `/library/${id}` },
+            { icon: MessageCircle, label: "Perguntar à IA", desc: "Converse com base nas fontes", disabled: true, route: "" },
+            { icon: Heart, label: "Apoio Emocional", desc: "Mensagem de esperança + CVV 188", disabled: false, route: "/crise" },
           ].map((action, i) => (
             <motion.button
               key={action.label}
@@ -84,7 +84,7 @@ const TraditionPage = () => {
               transition={{ delay: 0.3 + i * 0.1 }}
               disabled={action.disabled}
               onClick={() => {
-                if (action.label === "Apoio Emocional") navigate("/crise");
+                if (action.route) navigate(action.route);
               }}
               className="flex items-center gap-4 rounded-xl border border-border bg-card/50 p-5 text-left transition-colors hover:border-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
             >
