@@ -126,6 +126,18 @@ CRITICAL RULES:
     if (!response.ok) {
       const errText = await response.text();
       console.error("AI API error:", response.status, errText);
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "rate_limited", message: "Too many requests, please try again later." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "payment_required", message: "AI credits exhausted. Please add credits in Settings → Workspace → Usage." }),
+          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
       return new Response(
         JSON.stringify({ error: "Translation service error" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
