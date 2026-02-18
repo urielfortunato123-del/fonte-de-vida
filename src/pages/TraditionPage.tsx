@@ -74,7 +74,7 @@ const TraditionPage = () => {
         <div className="grid gap-3 sm:grid-cols-2">
           {[
             { icon: BookOpen, label: "Biblioteca", desc: "Textos sagrados e comentários", disabled: false, route: `/library/${id}` },
-            { icon: MessageCircle, label: "Perguntar à IA", desc: "Converse com base nas fontes", disabled: true, route: "" },
+            { icon: MessageCircle, label: "Perguntar à IA", desc: "Converse com base nas fontes", disabled: false, route: `/chat/${id}` },
             { icon: Heart, label: "Apoio Emocional", desc: "Mensagem de esperança + CVV 188", disabled: false, route: "/crise" },
           ].map((action, i) => (
             <motion.button
