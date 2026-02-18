@@ -1,15 +1,34 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, MessageCircle, Heart, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, MessageCircle, Heart, Sparkles, Loader2 } from "lucide-react";
 import { traditions, dailyWords } from "@/data/traditions";
+import { useTranslatedDaily } from "@/hooks/useTranslatedLibrary";
+
+const getDayOfYear = () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now.getTime() - start.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+};
 
 const TraditionPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const tradition = traditions.find((trad) => trad.id === id);
-  const word = dailyWords.find((w) => w.tradition === id);
+
+  // Get the daily word for this tradition
+  const traditionWords = dailyWords.filter((w) => w.tradition === id);
+  const dayIndex = getDayOfYear();
+  const wordIndex = traditionWords.length > 0 ? dayIndex % traditionWords.length : 0;
+  
+  // Find the index in the original array for the hook
+  const originalIndex = traditionWords.length > 0 
+    ? dailyWords.indexOf(traditionWords[wordIndex]) 
+    : 0;
+  
+  const { item: word, isTranslating } = useTranslatedDaily(dailyWords, originalIndex);
 
   if (!tradition) {
     return (
@@ -43,7 +62,7 @@ const TraditionPage = () => {
           <h1 className="mb-2 font-display text-4xl font-bold text-foreground">
             {t(`traditions.${tradition.id}`)}
           </h1>
-          <p className="text-muted-foreground">{tradition.description}</p>
+          <p className="text-muted-foreground">{t(`traditions.${tradition.id}_desc`)}</p>
           {isExplore && (
             <p className="mt-3 text-sm text-primary italic">
               {t("tradition_page.neutral_mode")}
@@ -51,7 +70,7 @@ const TraditionPage = () => {
           )}
         </motion.div>
 
-        {word && (
+        {word && word.tradition === id && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -61,6 +80,7 @@ const TraditionPage = () => {
             <div className="mb-3 flex items-center gap-2 text-primary">
               <Sparkles className="h-4 w-4" />
               <span className="text-xs font-medium uppercase tracking-widest">{t("tradition_page.teaching")}</span>
+              {isTranslating && <Loader2 className="h-3 w-3 animate-spin" />}
             </div>
             <blockquote className="mb-3 font-display text-lg italic text-foreground">
               "{word.text}"
