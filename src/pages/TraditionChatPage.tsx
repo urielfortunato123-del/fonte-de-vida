@@ -11,29 +11,30 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/tradition-ch
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const suggestedQuestions: Record<string, string[]> = {
-  catolico: ["O que é a Eucaristia?", "Como rezar o Terço?", "O que diz a Igreja sobre o perdão?"],
-  evangelico: ["O que é ser salvo pela fé?", "Como estudar a Bíblia?", "O que é o batismo no Espírito Santo?"],
-  islamico: ["Quais são os cinco pilares do Islã?", "O que o Alcorão diz sobre misericórdia?", "Como fazer a oração (Salat)?"],
-  judaismo: ["O que é o Shabbat?", "Como funciona o Teshuvá?", "O que a Torá ensina sobre justiça?"],
-  espirita: ["O que é reencarnação?", "Como funciona a mediunidade?", "O que Kardec ensina sobre caridade?"],
-  umbanda: ["Quem são os Orixás?", "O que é um terreiro?", "Como funciona a incorporação?"],
-  budismo: ["O que são as Quatro Nobres Verdades?", "Como meditar?", "O que é o Nirvana?"],
-  hinduismo: ["O que é Karma?", "O que ensina o Bhagavad Gita?", "Qual a diferença entre Atman e Brahman?"],
-  explorar: ["Deus existe?", "Qual o sentido da vida?", "As religiões podem coexistir em paz?"],
+const suggestionKeys: Record<string, string[]> = {
+  catolico: ["chat.suggestions.catolico_1", "chat.suggestions.catolico_2", "chat.suggestions.catolico_3"],
+  evangelico: ["chat.suggestions.evangelico_1", "chat.suggestions.evangelico_2", "chat.suggestions.evangelico_3"],
+  islamico: ["chat.suggestions.islamico_1", "chat.suggestions.islamico_2", "chat.suggestions.islamico_3"],
+  judaismo: ["chat.suggestions.judaismo_1", "chat.suggestions.judaismo_2", "chat.suggestions.judaismo_3"],
+  espirita: ["chat.suggestions.espirita_1", "chat.suggestions.espirita_2", "chat.suggestions.espirita_3"],
+  umbanda: ["chat.suggestions.umbanda_1", "chat.suggestions.umbanda_2", "chat.suggestions.umbanda_3"],
+  budismo: ["chat.suggestions.budismo_1", "chat.suggestions.budismo_2", "chat.suggestions.budismo_3"],
+  hinduismo: ["chat.suggestions.hinduismo_1", "chat.suggestions.hinduismo_2", "chat.suggestions.hinduismo_3"],
+  explorar: ["chat.suggestions.explorar_1", "chat.suggestions.explorar_2", "chat.suggestions.explorar_3"],
 };
 
 const TraditionChatPage = () => {
   const { traditionId } = useParams<{ traditionId: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const tradition = traditions.find((trad) => trad.id === traditionId);
-  const suggestions = suggestedQuestions[traditionId || ""] || suggestedQuestions.explorar;
+  const suggestionKeyList = suggestionKeys[traditionId || ""] || suggestionKeys.explorar;
+  const suggestions = suggestionKeyList.map((key) => t(key));
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,6 +69,7 @@ const TraditionChatPage = () => {
         body: JSON.stringify({
           messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
           traditionId,
+          lang: i18n.language,
         }),
       });
 
