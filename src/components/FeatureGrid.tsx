@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BookOpen, MessageCircle, Heart, GitCompareArrows } from "lucide-react";
 
 const features = [
-  { icon: BookOpen, title: "Biblioteca Espiritual", desc: "Textos sagrados de cada tradição", route: "" },
+  { icon: BookOpen, title: "Biblioteca Espiritual", desc: "Textos sagrados de cada tradição", route: "/biblioteca" },
   { icon: MessageCircle, title: "IA Conversacional", desc: "Pergunte e receba respostas com fontes", route: "/chat/explorar" },
   { icon: GitCompareArrows, title: "Comparar Religiões", desc: "Veja visões diferentes sem juízo", route: "/comparar" },
   { icon: Heart, title: "Modo Crise", desc: "Apoio emocional e contatos de ajuda", route: "/crise" },
