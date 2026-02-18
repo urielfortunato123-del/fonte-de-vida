@@ -37,14 +37,23 @@
   },
   "traditions": {
     "catolico": "Católico",
+    "catolico_desc": "Tradição cristã apostólica romana",
     "evangelico": "Evangélico",
+    "evangelico_desc": "Tradições protestantes e pentecostais",
     "islamico": "Islâmico",
+    "islamico_desc": "Fé islâmica e ensinamentos do Alcorão",
     "judaismo": "Judaísmo",
+    "judaismo_desc": "Tradição judaica e a Torá",
     "espirita": "Espírita",
+    "espirita_desc": "Doutrina espírita kardecista",
     "umbanda": "Umbanda",
+    "umbanda_desc": "Religião afro-brasileira",
     "budismo": "Budismo",
+    "budismo_desc": "Ensinamentos de Buda",
     "hinduismo": "Hinduísmo",
-    "explorar": "Explorar"
+    "hinduismo_desc": "Tradições védicas e hindus",
+    "explorar": "Explorar",
+    "explorar_desc": "Modo agnóstico — sem pressa, sem pressão"
   },
   "tradition_page": {
     "teaching": "Ensinamento",

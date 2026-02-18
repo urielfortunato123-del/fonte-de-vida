@@ -26,7 +26,7 @@ const TraditionCard = ({ tradition, onClick, index }: TraditionCardProps) => {
         {t(`traditions.${tradition.id}`)}
       </h3>
       <p className="text-xs text-muted-foreground leading-relaxed">
-        {tradition.description}
+        {t(`traditions.${tradition.id}_desc`)}
       </p>
       {tradition.id === "explorar" && (
         <span className="absolute -top-2 -right-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
