@@ -90,21 +90,36 @@ serve(async (req) => {
 
     const traditionPrompt = traditionPrompts[traditionId] || traditionPrompts.explorar;
 
-    const languageInstruction = lang && lang !== "pt-BR"
-      ? `- Respond in ${lang}. Use the appropriate language for all responses.`
-      : `- Responda em português brasileiro`;
+    const langMap: Record<string, string> = {
+      en: "English", es: "Spanish", fr: "French", it: "Italian",
+      ar: "Arabic", nl: "Dutch", zh: "Chinese (Simplified)", ko: "Korean",
+      ja: "Japanese", de: "German", ru: "Russian", "pt-PT": "European Portuguese",
+    };
 
-    const systemPrompt = `${traditionPrompt}
+    const isPortuguese = !lang || lang === "pt-BR";
+    const langName = langMap[lang] || lang;
 
-REGRAS GERAIS:
+    const rules = isPortuguese
+      ? `REGRAS GERAIS:
 - Sempre cite fontes reais (textos sagrados, autores, obras)
 - NUNCA invente doutrinas ou citações
 - Seja respeitoso e acolhedor
-${languageInstruction}
+- Responda em português brasileiro
 - Seja conciso mas informativo
-- Se não souber algo com certeza, diga que não tem certeza ao invés de inventar
+- Se não souber algo com certeza, diga "não tenho certeza" ao invés de inventar
 - Não substitua um líder religioso — sugira consultar quando apropriado
-- Se detectar que a pessoa está em sofrimento, ofereça acolhimento e sugira ajuda profissional`;
+- Se detectar que a pessoa está em sofrimento, ofereça acolhimento e sugira o CVV (188)`
+      : `GENERAL RULES:
+- ALWAYS respond entirely in ${langName}. Every word of your response must be in ${langName}.
+- Always cite real sources (sacred texts, authors, works)
+- NEVER invent doctrines or quotes
+- Be respectful and welcoming
+- Be concise but informative
+- If unsure about something, say so instead of making things up
+- Do not replace a religious leader — suggest consulting one when appropriate
+- If the person seems to be suffering, offer comfort and suggest professional help`;
+
+    const systemPrompt = `${traditionPrompt}\n\n${rules}`;
 
     const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
     if (!OPENROUTER_API_KEY) {
