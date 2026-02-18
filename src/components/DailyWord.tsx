@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { dailyWords, dailyMeditations } from "@/data/traditions";
-import { Sparkles, Brain } from "lucide-react";
+import { Sparkles, Brain, Loader2 } from "lucide-react";
+import { useTranslatedDaily } from "@/hooks/useTranslatedLibrary";
 
 const getDayOfYear = () => {
   const now = new Date();
@@ -16,10 +17,14 @@ const DailyWord = () => {
   const { t } = useTranslation();
   const dayIndex = getDayOfYear();
 
-  const word = dailyWords[dayIndex % dailyWords.length];
-  const meditation = dailyMeditations[dayIndex % dailyMeditations.length];
+  const wordIndex = dayIndex % dailyWords.length;
+  const medIndex = dayIndex % dailyMeditations.length;
+
+  const { item: word, isTranslating: wordTranslating } = useTranslatedDaily(dailyWords, wordIndex);
+  const { item: meditation, isTranslating: medTranslating } = useTranslatedDaily(dailyMeditations, medIndex);
 
   const current = mode === "word" ? word : meditation;
+  const isTranslating = mode === "word" ? wordTranslating : medTranslating;
   const label = mode === "word" ? t("daily.word_of_day") : t("daily.meditation_of_day");
   const Icon = mode === "word" ? Sparkles : Brain;
 
@@ -39,6 +44,7 @@ const DailyWord = () => {
               <span className="text-xs font-medium uppercase tracking-widest">
                 {label}
               </span>
+              {isTranslating && <Loader2 className="h-3 w-3 animate-spin" />}
             </div>
             <div className="flex gap-1 rounded-lg border border-border bg-background/50 p-0.5">
               <button
@@ -67,17 +73,17 @@ const DailyWord = () => {
           </div>
           <AnimatePresence mode="wait">
             <motion.div
-              key={mode}
+              key={`${mode}-${current?.text}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
               <blockquote className="mb-4 font-display text-xl font-medium italic leading-relaxed text-foreground md:text-2xl">
-                "{current.text}"
+                "{current?.text}"
               </blockquote>
               <cite className="text-sm text-muted-foreground not-italic">
-                — {current.source}
+                — {current?.source}
               </cite>
             </motion.div>
           </AnimatePresence>

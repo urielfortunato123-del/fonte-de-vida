@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import type { TraditionLibrary, Work, Chapter } from "@/data/library";
@@ -198,4 +198,51 @@ export function useTranslatedChapter(
   }, [traditionId, workId, chapterId, lang, isPtBR]);
 
   return { chapter, work: baseWork, isTranslating };
+}
+
+export function useTranslatedDaily(
+  items: Array<{ tradition?: string; text: string; source: string }>,
+  currentIndex: number
+) {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+  const isPtBR = lang === "pt-BR";
+
+  const baseItem = items[currentIndex];
+  const [translated, setTranslated] = useState(baseItem);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    if (!baseItem || isPtBR) {
+      setTranslated(baseItem);
+      return;
+    }
+
+    const cacheKey = getCacheKey("daily", lang, `item_${currentIndex}`);
+    const cached = getFromCache(cacheKey);
+
+    if (cached) {
+      setTranslated(cached);
+      return;
+    }
+
+    const doTranslate = async () => {
+      setIsTranslating(true);
+      try {
+        const content = { text: baseItem.text, source: baseItem.source };
+        const result = await translateContent(content, lang, baseItem.tradition || "explorar");
+        const merged = { ...baseItem, text: result.text || baseItem.text, source: result.source || baseItem.source };
+        setTranslated(merged);
+        setToCache(cacheKey, merged, lang);
+      } catch {
+        setTranslated(baseItem);
+      } finally {
+        setIsTranslating(false);
+      }
+    };
+
+    doTranslate();
+  }, [currentIndex, lang, isPtBR]);
+
+  return { item: translated, isTranslating };
 }
