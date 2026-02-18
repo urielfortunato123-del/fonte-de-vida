@@ -6,6 +6,7 @@ import TraditionCard from "@/components/TraditionCard";
 import DailyWord from "@/components/DailyWord";
 import FeatureGrid from "@/components/FeatureGrid";
 import DonateDialog from "@/components/DonateDialog";
+import { Search } from "lucide-react";
 import logoFountain from "@/assets/logo-fountain.png";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -50,6 +51,13 @@ const Index = () => {
           <p className="max-w-md text-base text-muted-foreground">
             Conhecimento espiritual confiável, com respeito a todas as tradições.
           </p>
+          <Link
+            to="/buscar"
+            className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+          >
+            <Search className="h-4 w-4" />
+            Buscar versículos
+          </Link>
         </motion.header>
 
         {/* Tradições */}
