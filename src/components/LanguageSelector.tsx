@@ -2,6 +2,22 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Globe, MapPin, ChevronDown } from "lucide-react";
 import { languages } from "@/i18n";
+
+const flagCodeMap: Record<string, string> = {
+  "pt-BR": "br", "pt-PT": "pt", en: "us", es: "es", fr: "fr",
+  it: "it", ar: "sa", nl: "nl", zh: "cn", ko: "kr", ja: "jp", de: "de", ru: "ru",
+};
+
+const FlagImg = ({ code, className = "" }: { code: string; className?: string }) => (
+  <img
+    src={`https://flagcdn.com/24x18/${flagCodeMap[code] || "un"}.png`}
+    srcSet={`https://flagcdn.com/48x36/${flagCodeMap[code] || "un"}.png 2x`}
+    alt=""
+    className={`inline-block rounded-sm ${className}`}
+    width={24}
+    height={18}
+  />
+);
 import {
   Dialog,
   DialogContent,
@@ -64,7 +80,7 @@ const LanguageSelector = () => {
       <DialogTrigger asChild>
         <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/50 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground">
           <Globe className="h-3.5 w-3.5" />
-          <span>{currentLang.flag}</span>
+          <FlagImg code={currentLang.code} />
           <ChevronDown className="h-3 w-3" />
         </button>
       </DialogTrigger>
@@ -96,7 +112,7 @@ const LanguageSelector = () => {
                   : "text-foreground/80 hover:bg-card/80"
               }`}
             >
-              <span className="text-lg">{lang.flag}</span>
+              <FlagImg code={lang.code} />
               <span>{lang.name}</span>
             </button>
           ))}
