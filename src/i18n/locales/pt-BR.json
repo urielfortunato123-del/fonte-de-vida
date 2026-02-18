@@ -105,7 +105,7 @@
     "ai_label": "IA Conversacional",
     "ask_ai": "Pergunte à IA",
     "ask_about": "Faça perguntas sobre {{tradition}} e receba respostas fundamentadas em fontes reais.",
-    "suggestions": "Sugestões",
+    "suggestions_label": "Sugestões",
     "placeholder": "Faça sua pergunta...",
     "clear": "Limpar conversa",
     "disclaimer": "A IA pode cometer erros. Consulte sempre um líder religioso para orientação espiritual.",

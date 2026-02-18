@@ -199,7 +199,7 @@ const TraditionChatPage = () => {
               </div>
               <div className="w-full max-w-md space-y-2">
                 <p className="text-xs text-muted-foreground/60 uppercase tracking-widest text-center">
-                  {t("chat.suggestions")}
+                  {t("chat.suggestions_label")}
                 </p>
                 {suggestions.map((q) => (
                   <button
