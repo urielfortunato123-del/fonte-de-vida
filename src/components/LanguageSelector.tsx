@@ -35,7 +35,7 @@ const detectLanguageByLocation = async (): Promise<string | null> => {
     const countryToLang: Record<string, string> = {
       BR: "pt-BR", PT: "pt-PT", AO: "pt-PT", MZ: "pt-PT",
       US: "en", GB: "en", AU: "en", CA: "en", NZ: "en", IE: "en", IN: "en",
-      ES: "es", MX: "es", AR: "es", CO: "es", CL: "es", PE: "es", VE: "es",
+      ES: "es", MX: "es", AR: "es", CO: "es", CL: "es", PE: "es", VE: "es", PY: "es",
       FR: "fr", BE: "fr", CH: "fr",
       IT: "it",
       SA: "ar", AE: "ar", EG: "ar", MA: "ar", DZ: "ar", IQ: "ar", JO: "ar", KW: "ar", QA: "ar",
