@@ -1,0 +1,156 @@
+{
+  "app": {
+    "name": "Fonte de Vida",
+    "tagline": "Conhecimento espiritual confiável, com respeito a todas as tradições.",
+    "footer": "Fonte de Vida · Conhecimento espiritual com respeito e confiança",
+    "developer": "Desenvolvido por Uriel da Fonseca Fortunato",
+    "crisis_footer": "Em crise? Ligue 188 (CVV) · 190 · 192"
+  },
+  "nav": {
+    "home": "Início",
+    "back": "Voltar",
+    "search_verses": "Buscar versículos"
+  },
+  "home": {
+    "choose_tradition": "Escolha sua tradição",
+    "what_you_can_do": "O que você pode fazer",
+    "install_phone": "Instalar no celular",
+    "donate": "Ajude o app ficar ativo"
+  },
+  "features": {
+    "library": "Biblioteca Espiritual",
+    "library_desc": "Textos sagrados de cada tradição",
+    "chat": "IA Conversacional",
+    "chat_desc": "Pergunte e receba respostas com fontes",
+    "meditation": "Meditação",
+    "meditation_desc": "Meditações guiadas por tradição",
+    "compare": "Comparar Religiões",
+    "compare_desc": "Veja visões diferentes sem juízo",
+    "crisis": "Modo Crise",
+    "crisis_desc": "Apoio emocional e contatos de ajuda"
+  },
+  "daily": {
+    "word_of_day": "Palavra do Dia",
+    "meditation_of_day": "Meditação do Dia",
+    "word": "Palavra",
+    "meditation": "Meditação"
+  },
+  "traditions": {
+    "catolico": "Católico",
+    "evangelico": "Evangélico",
+    "islamico": "Islâmico",
+    "judaismo": "Judaísmo",
+    "espirita": "Espírita",
+    "umbanda": "Umbanda",
+    "budismo": "Budismo",
+    "hinduismo": "Hinduísmo",
+    "explorar": "Explorar"
+  },
+  "tradition_page": {
+    "teaching": "Ensinamento",
+    "library": "Biblioteca",
+    "library_desc": "Textos sagrados e comentários",
+    "ask_ai": "Perguntar à IA",
+    "ask_ai_desc": "Converse com base nas fontes",
+    "emotional_support": "Apoio Emocional",
+    "emotional_support_desc": "Mensagem de esperança + CVV 188",
+    "neutral_mode": "Modo neutro — respostas acadêmicas, sem julgamento.",
+    "not_found": "Tradição não encontrada."
+  },
+  "library_page": {
+    "title": "Biblioteca",
+    "sacred_texts": "Textos sagrados",
+    "search_work": "Buscar obra...",
+    "glossary": "Glossário",
+    "chapter": "capítulo",
+    "chapters": "capítulos",
+    "work": "obra",
+    "works": "obras",
+    "available": "disponíveis",
+    "not_found": "Biblioteca não encontrada."
+  },
+  "search": {
+    "title": "Busca Global",
+    "placeholder": "Pesquisar versículos e glossário...",
+    "min_chars": "Digite pelo menos 3 caracteres para buscar.",
+    "results_100": "100+ resultados encontrados (mostrando os primeiros 100)",
+    "results_count": "{{count}} resultado encontrado",
+    "results_count_plural": "{{count}} resultados encontrados",
+    "clear_filters": "Limpar filtros",
+    "all": "Tudo",
+    "verses": "Versículos",
+    "glossary": "Glossário"
+  },
+  "compare": {
+    "title": "Comparar Religiões",
+    "subtitle": "Faça uma pergunta e veja a resposta sob diferentes visões — sem juízo de valor.",
+    "select_traditions": "Selecione as tradições (mín. 2)",
+    "placeholder": "Ex: O que acontece após a morte?",
+    "generating": "Gerando comparação...",
+    "empty_state": "Selecione as tradições e faça sua pergunta para ver a comparação.",
+    "error_min": "Selecione ao menos 2 tradições e faça uma pergunta.",
+    "error_ai": "Erro ao consultar a IA.",
+    "error_connection": "Erro de conexão. Tente novamente."
+  },
+  "chat": {
+    "ai_label": "IA Conversacional",
+    "ask_ai": "Pergunte à IA",
+    "ask_about": "Faça perguntas sobre {{tradition}} e receba respostas fundamentadas em fontes reais.",
+    "suggestions": "Sugestões",
+    "placeholder": "Faça sua pergunta...",
+    "clear": "Limpar conversa",
+    "disclaimer": "A IA pode cometer erros. Consulte sempre um líder religioso para orientação espiritual.",
+    "error_ai": "Erro ao consultar a IA.",
+    "error_connection": "Erro de conexão. Tente novamente."
+  },
+  "crisis": {
+    "title": "Você não está sozinho",
+    "subtitle": "Se você está passando por um momento difícil, saiba que existem pessoas prontas para te ouvir.",
+    "quote": "Mesmo na escuridão mais profunda, existe uma luz que nunca se apaga — ela está dentro de você.",
+    "disclaimer": "Este app não substitui atendimento profissional. Procure ajuda especializada quando necessário.",
+    "cvv": "CVV – Centro de Valorização da Vida",
+    "cvv_desc": "24h, gratuito",
+    "samu": "SAMU",
+    "samu_desc": "Emergência médica",
+    "police": "Polícia Militar",
+    "police_desc": "Emergência"
+  },
+  "meditation": {
+    "title": "Meditação",
+    "choose_tradition": "Escolha uma tradição para encontrar meditações guiadas.",
+    "choose_theme": "Escolha um tema",
+    "meditations": "meditações",
+    "disclaimer": "Vídeos do YouTube. O conteúdo é de responsabilidade dos criadores originais.",
+    "choose_another": "Escolher outro tema"
+  },
+  "install": {
+    "title": "Instalar Fonte de Vida",
+    "subtitle": "Tenha acesso rápido ao app direto da tela inicial do seu celular — funciona offline!",
+    "installed": "App já instalado!",
+    "install_now": "Instalar agora",
+    "iphone_title": "No iPhone (Safari)",
+    "iphone_1": "Toque no botão Compartilhar (ícone de quadrado com seta)",
+    "iphone_2": "Role para baixo e toque em Adicionar à Tela de Início",
+    "iphone_3": "Toque em Adicionar",
+    "android_title": "No Android (Chrome)",
+    "android_1": "Toque no menu ⋮ (três pontos)",
+    "android_2": "Toque em Instalar app ou Adicionar à tela inicial",
+    "android_3": "Confirme a instalação"
+  },
+  "donate": {
+    "title": "Contribua com o desenvolvedor",
+    "subtitle": "Sua contribuição ajuda a manter o Fonte de Vida ativo e gratuito para todos.",
+    "pix_label": "Pix Copia-e-cola:",
+    "copied": "Chave copiada! ✓",
+    "thanks": "Qualquer valor é bem-vindo. Obrigado por apoiar! 🙏"
+  },
+  "not_found": {
+    "title": "404",
+    "message": "Página não encontrada",
+    "back_home": "Voltar ao Início"
+  },
+  "language": {
+    "title": "Idioma",
+    "detect_location": "Detectar localização"
+  }
+}

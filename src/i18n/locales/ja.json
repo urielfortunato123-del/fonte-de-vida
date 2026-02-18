@@ -1,0 +1,19 @@
+{
+  "app": { "name": "いのちの泉", "tagline": "すべての伝統を尊重した、信頼できるスピリチュアルな知識。", "footer": "いのちの泉 · 敬意と信頼のスピリチュアルな知識", "developer": "開発者：Uriel da Fonseca Fortunato", "crisis_footer": "危機ですか？いのちの電話：0570-783-556" },
+  "nav": { "home": "ホーム", "back": "戻る", "search_verses": "聖句を検索" },
+  "home": { "choose_tradition": "伝統を選んでください", "what_you_can_do": "できること", "install_phone": "スマホにインストール", "donate": "アプリの維持にご協力ください" },
+  "features": { "library": "スピリチュアル図書館", "library_desc": "各伝統の聖典", "chat": "AI会話", "chat_desc": "質問して出典付きの回答を得る", "meditation": "瞑想", "meditation_desc": "伝統別ガイド瞑想", "compare": "宗教を比較", "compare_desc": "判断なしに異なる視点を見る", "crisis": "危機モード", "crisis_desc": "心のサポートと相談窓口" },
+  "daily": { "word_of_day": "今日の言葉", "meditation_of_day": "今日の瞑想", "word": "言葉", "meditation": "瞑想" },
+  "traditions": { "catolico": "カトリック", "evangelico": "プロテスタント", "islamico": "イスラム", "judaismo": "ユダヤ教", "espirita": "心霊主義", "umbanda": "ウンバンダ", "budismo": "仏教", "hinduismo": "ヒンドゥー教", "explorar": "探求" },
+  "tradition_page": { "teaching": "教え", "library": "図書館", "library_desc": "聖典と注釈", "ask_ai": "AIに質問", "ask_ai_desc": "出典に基づいた会話", "emotional_support": "心のサポート", "emotional_support_desc": "希望のメッセージ + 相談窓口", "neutral_mode": "中立モード — 学術的な回答、判断なし。", "not_found": "伝統が見つかりません。" },
+  "library_page": { "title": "図書館", "sacred_texts": "聖典", "search_work": "作品を検索...", "glossary": "用語集", "chapter": "章", "chapters": "章", "work": "作品", "works": "作品", "available": "利用可能", "not_found": "図書館が見つかりません。" },
+  "search": { "title": "全体検索", "placeholder": "聖句と用語を検索...", "min_chars": "3文字以上入力してください。", "results_100": "100件以上の結果（最初の100件を表示）", "results_count": "{{count}}件の結果", "results_count_plural": "{{count}}件の結果", "clear_filters": "フィルターをクリア", "all": "すべて", "verses": "聖句", "glossary": "用語" },
+  "compare": { "title": "宗教を比較", "subtitle": "質問して、異なる視点からの回答を見てください — 判断なしに。", "select_traditions": "伝統を選択（最低2つ）", "placeholder": "例：死後に何が起こりますか？", "generating": "比較を生成中...", "empty_state": "伝統を選択して質問すると比較が表示されます。", "error_min": "少なくとも2つの伝統を選択して質問してください。", "error_ai": "AI相談エラー。", "error_connection": "接続エラー。もう一度お試しください。" },
+  "chat": { "ai_label": "AI会話", "ask_ai": "AIに質問", "ask_about": "{{tradition}}について質問し、実際の出典に基づいた回答を受け取りましょう。", "suggestions": "提案", "placeholder": "質問してください...", "clear": "会話をクリア", "disclaimer": "AIは間違えることがあります。スピリチュアルな指導については宗教指導者にご相談ください。", "error_ai": "AI相談エラー。", "error_connection": "接続エラー。もう一度お試しください。" },
+  "crisis": { "title": "あなたは一人ではありません", "subtitle": "つらい時期を過ごしているなら、あなたの話を聞いてくれる人がいます。", "quote": "最も深い闇の中にも、決して消えない光がある — それはあなたの中にある。", "disclaimer": "このアプリは専門的なケアの代わりにはなりません。", "cvv": "いのちの電話", "cvv_desc": "0570-783-556", "samu": "救急", "samu_desc": "119", "police": "警察", "police_desc": "110" },
+  "meditation": { "title": "瞑想", "choose_tradition": "ガイド瞑想を見つけるために伝統を選んでください。", "choose_theme": "テーマを選択", "meditations": "瞑想", "disclaimer": "YouTube動画。コンテンツは元の制作者の責任です。", "choose_another": "別のテーマを選ぶ" },
+  "install": { "title": "いのちの泉をインストール", "subtitle": "ホーム画面からすぐにアプリにアクセス — オフラインで動作！", "installed": "アプリはすでにインストールされています！", "install_now": "今すぐインストール", "iphone_title": "iPhone (Safari)", "iphone_1": "共有ボタンをタップ", "iphone_2": "ホーム画面に追加をタップ", "iphone_3": "追加をタップ", "android_title": "Android (Chrome)", "android_1": "メニュー ⋮ をタップ", "android_2": "アプリをインストールをタップ", "android_3": "インストールを確認" },
+  "donate": { "title": "開発者を支援", "subtitle": "あなたの貢献がいのちの泉を無料で維持するのに役立ちます。", "pix_label": "Pixコピー：", "copied": "キーをコピーしました！✓", "thanks": "どんな金額でも歓迎です。ご支援ありがとうございます！🙏" },
+  "not_found": { "title": "404", "message": "ページが見つかりません", "back_home": "ホームに戻る" },
+  "language": { "title": "言語", "detect_location": "位置を検出" }
+}
