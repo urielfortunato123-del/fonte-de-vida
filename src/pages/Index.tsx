@@ -99,9 +99,12 @@ const Index = () => {
           <p className="text-xs text-muted-foreground">
             Fonte de Vida · Conhecimento espiritual com respeito e confiança
           </p>
-          <p className="mt-1 text-xs text-muted-foreground/60">
-            Em crise? Ligue 188 (CVV) · 190 · 192
-          </p>
+           <p className="mt-1 text-xs text-muted-foreground/60">
+             Em crise? Ligue 188 (CVV) · 190 · 192
+           </p>
+           <p className="mt-3 text-[11px] text-muted-foreground/40">
+             Desenvolvido por Uriel da Fonseca Fortunato
+           </p>
         </footer>
       </div>
     </div>
