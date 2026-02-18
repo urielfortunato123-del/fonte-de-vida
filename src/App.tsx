@@ -14,6 +14,7 @@ import InstallPage from "./pages/InstallPage";
 import TraditionChatPage from "./pages/TraditionChatPage";
 import SearchPage from "./pages/SearchPage";
 import BibliotecaPage from "./pages/BibliotecaPage";
+import MeditationPage from "./pages/MeditationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/chat/:traditionId" element={<TraditionChatPage />} />
           <Route path="/buscar" element={<SearchPage />} />
           <Route path="/biblioteca" element={<BibliotecaPage />} />
+          <Route path="/meditacao" element={<MeditationPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
