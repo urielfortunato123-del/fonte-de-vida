@@ -43,7 +43,7 @@ const DonateDialog = () => {
 
         <div className="space-y-4 pt-2">
           <div className="flex justify-center">
-            <img src={pixQrCode} alt="QR Code Pix" className="h-48 w-48 rounded-lg" />
+            <img src={pixQrCode} alt="QR Code Pix" className="h-52 w-52 object-contain" style={{ imageRendering: "pixelated" }} />
           </div>
 
           <p className="text-center text-sm font-medium text-foreground">
