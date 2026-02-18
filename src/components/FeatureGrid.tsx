@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BookOpen, MessageCircle, Heart, GitCompareArrows } from "lucide-react";
+import { BookOpen, MessageCircle, Heart, GitCompareArrows, Brain } from "lucide-react";
 
 const features = [
   { icon: BookOpen, title: "Biblioteca Espiritual", desc: "Textos sagrados de cada tradição", route: "/biblioteca" },
   { icon: MessageCircle, title: "IA Conversacional", desc: "Pergunte e receba respostas com fontes", route: "/chat/explorar" },
+  { icon: Brain, title: "Meditação", desc: "Meditações guiadas por tradição", route: "/meditacao" },
   { icon: GitCompareArrows, title: "Comparar Religiões", desc: "Veja visões diferentes sem juízo", route: "/comparar" },
   { icon: Heart, title: "Modo Crise", desc: "Apoio emocional e contatos de ajuda", route: "/crise" },
 ];
