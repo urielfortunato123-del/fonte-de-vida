@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { traditions } from "@/data/traditions";
 import TraditionCard from "@/components/TraditionCard";
@@ -88,6 +88,14 @@ const Index = () => {
 
         {/* Footer */}
         <footer className="border-t border-border pt-8 text-center">
+          <div className="mb-3">
+            <Link
+              to="/instalar"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
+            >
+              📱 Instalar no celular
+            </Link>
+          </div>
           <p className="text-xs text-muted-foreground">
             Fonte de Vida · Conhecimento espiritual com respeito e confiança
           </p>
