@@ -57,7 +57,7 @@ Tradições solicitadas: ${selectedNames}`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemma-3n-e4b-it:free",
+        model: "google/gemma-3n-e4b-it",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: question },
