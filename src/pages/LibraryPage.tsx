@@ -1,10 +1,10 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, BookMarked, Search } from "lucide-react";
+import { ArrowLeft, BookOpen, BookMarked, Search, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { traditions } from "@/data/traditions";
-import { getLibraryByTradition } from "@/data/library";
+import { useTranslatedLibrary } from "@/hooks/useTranslatedLibrary";
 
 const LibraryPage = () => {
   const { traditionId } = useParams<{ traditionId: string }>();
@@ -13,7 +13,7 @@ const LibraryPage = () => {
   const [search, setSearch] = useState("");
 
   const tradition = traditions.find((trad) => trad.id === traditionId);
-  const lib = getLibraryByTradition(traditionId || "");
+  const { library: lib, isTranslating } = useTranslatedLibrary(traditionId || "");
 
   if (!tradition || !lib) {
     return (
@@ -52,6 +52,9 @@ const LibraryPage = () => {
             <h1 className="font-display text-3xl font-bold text-foreground">
               {t("library_page.title")}
             </h1>
+            {isTranslating && (
+              <Loader2 className="h-4 w-4 animate-spin text-primary" />
+            )}
           </div>
           <p className="text-muted-foreground text-sm">
             {t("library_page.sacred_texts")} — {t(`traditions.${tradition.id}`)} {tradition.icon}

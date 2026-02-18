@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.tradition-chat]
 verify_jwt = false
+
+[functions.translate-library]
+verify_jwt = false

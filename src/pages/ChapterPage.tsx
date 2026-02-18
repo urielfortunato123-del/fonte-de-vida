@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft, Info, Loader2 } from "lucide-react";
 import { traditions } from "@/data/traditions";
 import { getLibraryByTradition } from "@/data/library";
+import { useTranslatedChapter } from "@/hooks/useTranslatedLibrary";
 
 const ChapterPage = () => {
   const { traditionId, workId, chapterId } = useParams<{
@@ -15,9 +16,11 @@ const ChapterPage = () => {
   const { t } = useTranslation();
 
   const tradition = traditions.find((trad) => trad.id === traditionId);
-  const lib = getLibraryByTradition(traditionId || "");
-  const work = lib?.works.find((w) => w.id === workId);
-  const chapter = work?.chapters.find((c) => c.id === chapterId);
+  const { chapter, work, isTranslating } = useTranslatedChapter(
+    traditionId || "",
+    workId || "",
+    chapterId || ""
+  );
 
   if (!tradition || !work || !chapter) {
     return (
@@ -45,9 +48,12 @@ const ChapterPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <p className="text-xs text-primary uppercase tracking-widest mb-1">
-            {tradition.icon} {t(`traditions.${tradition.id}`)} · {work.name}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-xs text-primary uppercase tracking-widest mb-1">
+              {tradition.icon} {t(`traditions.${tradition.id}`)} · {work.name}
+            </p>
+            {isTranslating && <Loader2 className="h-3 w-3 animate-spin text-primary" />}
+          </div>
           <h1 className="font-display text-3xl font-bold text-foreground">
             {chapter.number}. {chapter.name}
           </h1>

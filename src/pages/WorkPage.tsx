@@ -1,9 +1,9 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { ArrowLeft, ScrollText } from "lucide-react";
+import { ArrowLeft, ScrollText, Loader2 } from "lucide-react";
 import { traditions } from "@/data/traditions";
-import { getLibraryByTradition } from "@/data/library";
+import { useTranslatedLibrary } from "@/hooks/useTranslatedLibrary";
 
 const WorkPage = () => {
   const { traditionId, workId } = useParams<{ traditionId: string; workId: string }>();
@@ -11,7 +11,7 @@ const WorkPage = () => {
   const { t } = useTranslation();
 
   const tradition = traditions.find((trad) => trad.id === traditionId);
-  const lib = getLibraryByTradition(traditionId || "");
+  const { library: lib, isTranslating } = useTranslatedLibrary(traditionId || "");
   const work = lib?.works.find((w) => w.id === workId);
 
   if (!tradition || !work) {
@@ -40,7 +40,10 @@ const WorkPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <p className="text-xs text-primary uppercase tracking-widest mb-1">{tradition.icon} {t(`traditions.${tradition.id}`)}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-xs text-primary uppercase tracking-widest mb-1">{tradition.icon} {t(`traditions.${tradition.id}`)}</p>
+            {isTranslating && <Loader2 className="h-3 w-3 animate-spin text-primary" />}
+          </div>
           <h1 className="font-display text-3xl font-bold text-foreground mb-1">{work.name}</h1>
           <p className="text-sm text-muted-foreground">{work.description}</p>
         </motion.div>
