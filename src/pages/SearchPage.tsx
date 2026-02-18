@@ -22,7 +22,16 @@ interface SearchResult {
 const SearchPage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [selectedTraditions, setSelectedTraditions] = useState<Set<string>>(new Set());
 
+  const toggleTradition = (id: string) => {
+    setSelectedTraditions((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (q.length < 3) return [];
@@ -30,6 +39,7 @@ const SearchPage = () => {
     const found: SearchResult[] = [];
 
     for (const tLib of library) {
+      if (selectedTraditions.size > 0 && !selectedTraditions.has(tLib.traditionId)) continue;
       const tradition = traditions.find((t) => t.id === tLib.traditionId);
       if (!tradition) continue;
 
@@ -57,7 +67,7 @@ const SearchPage = () => {
     }
 
     return found;
-  }, [query]);
+  }, [query, selectedTraditions]);
 
   const highlightMatch = (text: string) => {
     const q = query.trim();
@@ -105,6 +115,30 @@ const SearchPage = () => {
               className="pl-10"
               autoFocus
             />
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {traditions.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => toggleTradition(t.id)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  selectedTraditions.has(t.id)
+                    ? "border-primary bg-primary/20 text-primary"
+                    : "border-border bg-card/50 text-muted-foreground hover:border-primary/30"
+                }`}
+              >
+                <span>{t.icon}</span>
+                {t.name}
+              </button>
+            ))}
+            {selectedTraditions.size > 0 && (
+              <button
+                onClick={() => setSelectedTraditions(new Set())}
+                className="rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Limpar filtros
+              </button>
+            )}
           </div>
           {query.trim().length > 0 && query.trim().length < 3 && (
             <p className="mt-2 text-xs text-muted-foreground">
