@@ -113,7 +113,7 @@ REGRAS GERAIS:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemma-3n-e4b-it",
+        model: "google/gemma-3n-e4b-it:free",
         messages: [
           { role: "system", content: systemPrompt },
           ...messages.slice(-20), // Keep last 20 messages for context
