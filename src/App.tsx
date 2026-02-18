@@ -11,6 +11,7 @@ import WorkPage from "./pages/WorkPage";
 import ChapterPage from "./pages/ChapterPage";
 import ComparePage from "./pages/ComparePage";
 import InstallPage from "./pages/InstallPage";
+import TraditionChatPage from "./pages/TraditionChatPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/crise" element={<CrisePage />} />
           <Route path="/comparar" element={<ComparePage />} />
           <Route path="/instalar" element={<InstallPage />} />
+          <Route path="/chat/:traditionId" element={<TraditionChatPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
