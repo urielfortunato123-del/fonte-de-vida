@@ -106,6 +106,11 @@ ${languageInstruction}
 - Não substitua um líder religioso — sugira consultar quando apropriado
 - Se detectar que a pessoa está em sofrimento, ofereça acolhimento e sugira ajuda profissional`;
 
+    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    if (!OPENROUTER_API_KEY) {
+      throw new Error("OPENROUTER_API_KEY is not configured");
+    }
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
