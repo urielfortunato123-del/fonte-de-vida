@@ -71,7 +71,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Don't translate Portuguese
     if (targetLang === "pt-BR") {
       return new Response(
         JSON.stringify({ translated: content }),
@@ -96,46 +95,39 @@ CRITICAL RULES:
 7. Return ONLY valid JSON, no explanations or markdown.
 8. Preserve all special characters, line breaks, and formatting within strings.`;
 
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
-    if (!OPENROUTER_API_KEY) {
-      throw new Error("OPENROUTER_API_KEY is not configured");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    if (!GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY is not configured");
     }
 
+    const geminiContents = [
+      { role: "user", parts: [{ text: systemPrompt }] },
+      { role: "model", parts: [{ text: "Understood. I will translate the JSON content accurately." }] },
+      { role: "user", parts: [{ text: `Translate this JSON to ${langName}:\n\n${JSON.stringify(content)}` }] },
+    ];
+
     const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "google/gemma-3n-e4b-it",
-          messages: [
-            { role: "system", content: systemPrompt },
-            {
-              role: "user",
-              content: `Translate this JSON to ${langName}:\n\n${JSON.stringify(content)}`,
-            },
-          ],
-          temperature: 0.1,
+          contents: geminiContents,
+          generationConfig: {
+            temperature: 0.1,
+            maxOutputTokens: 8192,
+          },
         }),
       }
     );
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("AI API error:", response.status, errText);
+      console.error("Gemini API error:", response.status, errText);
       if (response.status === 429) {
         return new Response(
           JSON.stringify({ error: "rate_limited", message: "Too many requests, please try again later." }),
           { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "payment_required", message: "AI credits exhausted. Please add credits in Settings → Workspace → Usage." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
       return new Response(
@@ -145,7 +137,7 @@ CRITICAL RULES:
     }
 
     const data = await response.json();
-    const rawContent = data.choices?.[0]?.message?.content || "";
+    const rawContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     // Extract JSON from response (might be wrapped in markdown code blocks)
     let jsonStr = rawContent;
