@@ -155,11 +155,11 @@
   },
   "meditation": {
     "title": "Meditação",
-    "choose_tradition": "Escolha uma tradição para encontrar meditações guiadas.",
-    "choose_theme": "Escolha um tema",
-    "meditations": "meditações",
-    "disclaimer": "Vídeos do YouTube. O conteúdo é de responsabilidade dos criadores originais.",
-    "choose_another": "Escolher outro tema"
+    "choose_tradition": "Escolha uma tradição para sons ambiente de meditação.",
+    "choose_theme": "Escolha um som",
+    "meditations": "sons",
+    "disclaimer": "",
+    "choose_another": "Escolher outro som"
   },
   "install": {
     "title": "Instalar Fonte de Vida",

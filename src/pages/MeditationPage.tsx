@@ -2,68 +2,71 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { traditions } from "@/data/traditions";
+import { type SoundType } from "@/lib/ambientSounds";
+import MeditationPlayer from "@/components/MeditationPlayer";
 
-interface MeditationVideo {
+interface MeditationSound {
   label: string;
-  videoId: string;
+  type: SoundType;
+  icon: string;
 }
 
-const meditationVideos: Record<string, MeditationVideo[]> = {
+const meditationSounds: Record<string, MeditationSound[]> = {
   catolico: [
-    { label: "Meditação com Oração", videoId: "5kKLxLnCbq8" },
-    { label: "Terço Meditado", videoId: "QJ5AxS_yFkU" },
-    { label: "Lectio Divina", videoId: "r1qMm_bGYjc" },
-    { label: "Adoração Eucarística", videoId: "3KGBlpmtfXo" },
+    { label: "Sinos da Igreja", type: "bells", icon: "🔔" },
+    { label: "Contemplação Silenciosa", type: "wind", icon: "🕊️" },
+    { label: "Riacho da Paz", type: "stream", icon: "💧" },
+    { label: "Noite de Oração", type: "night", icon: "🌙" },
   ],
   evangelico: [
-    { label: "Meditação Bíblica", videoId: "ZELVhME-Gk0" },
-    { label: "Louvor e Adoração", videoId: "FDTf5BOUBkE" },
-    { label: "Devocional Diário", videoId: "bE0V4XYnUjM" },
-    { label: "Oração Guiada", videoId: "7i-xFqGgSuQ" },
+    { label: "Sinos de Louvor", type: "bells", icon: "🎵" },
+    { label: "Chuva de Bênçãos", type: "rain", icon: "🌧️" },
+    { label: "Jardim do Espírito", type: "forest", icon: "🌿" },
+    { label: "Rio de Água Viva", type: "stream", icon: "🏞️" },
   ],
   islamico: [
-    { label: "Recitação do Alcorão", videoId: "V4yx5A0esHY" },
-    { label: "Dhikr Meditativo", videoId: "QmU1y7USQMU" },
-    { label: "Meditação Sufi", videoId: "3x0r_7VyfEk" },
-    { label: "Relaxamento Islâmico", videoId: "XAafMPIgxtg" },
+    { label: "Vento do Deserto", type: "wind", icon: "🏜️" },
+    { label: "Água Corrente", type: "stream", icon: "💦" },
+    { label: "Noite de Contemplação", type: "night", icon: "🌙" },
+    { label: "Fogueira Meditativa", type: "fire", icon: "🔥" },
   ],
   judaismo: [
-    { label: "Hitbodedut", videoId: "vC5E1gMi0Mg" },
-    { label: "Salmos em Hebraico", videoId: "H7bD3E3g1rg" },
-    { label: "Meditação Cabalística", videoId: "4R0vGS7QUSY" },
-    { label: "Música de Shabbat", videoId: "JxdDa0k97hg" },
+    { label: "Sino Tibetano (Shofar)", type: "singing-bowl", icon: "📯" },
+    { label: "Mar da Galileia", type: "ocean", icon: "🌊" },
+    { label: "Velas de Shabbat", type: "fire", icon: "🕯️" },
+    { label: "Noite Estrelada", type: "night", icon: "✡️" },
   ],
   espirita: [
-    { label: "Passe e Equilíbrio", videoId: "f5xZnE5Gp7c" },
-    { label: "Meditação Kardecista", videoId: "0H0LJhSn8Kk" },
-    { label: "Prece Guiada", videoId: "q74r3fXGIqk" },
-    { label: "Evangelho no Lar", videoId: "8wCRzr8w1fI" },
+    { label: "Equilíbrio Energético", type: "singing-bowl", icon: "✨" },
+    { label: "Chuva Purificadora", type: "rain", icon: "🌧️" },
+    { label: "Natureza e Paz", type: "forest", icon: "🌳" },
+    { label: "Harmonia Noturna", type: "night", icon: "🌌" },
   ],
   umbanda: [
-    { label: "Pontos Cantados", videoId: "6-bJnNIsqkk" },
-    { label: "Conexão com Orixás", videoId: "jY3aKo7FQPY" },
-    { label: "Natureza e Harmonia", videoId: "x7SClMYGr28" },
-    { label: "Sons de Atabaque", videoId: "G1h8J7PqSbU" },
+    { label: "Sons da Natureza", type: "forest", icon: "🌿" },
+    { label: "Cachoeira Sagrada", type: "stream", icon: "🌊" },
+    { label: "Fogueira dos Orixás", type: "fire", icon: "🔥" },
+    { label: "Vento da Mata", type: "wind", icon: "🍃" },
   ],
   budismo: [
-    { label: "Mindfulness Guiada", videoId: "inpok4MKVLM" },
-    { label: "Vipassana", videoId: "sN6pRj1Lolc" },
-    { label: "Metta (Amor-Bondade)", videoId: "sz7cpV7ERsM" },
-    { label: "Zen e Respiração", videoId: "SEfs5TJZ6Nk" },
+    { label: "Sino Tibetano", type: "singing-bowl", icon: "🔔" },
+    { label: "Mantra OM", type: "om", icon: "🕉️" },
+    { label: "Riacho Zen", type: "stream", icon: "🎋" },
+    { label: "Chuva Mindful", type: "rain", icon: "☔" },
   ],
   hinduismo: [
-    { label: "Mantra OM", videoId: "aEqlQvczMJQ" },
-    { label: "Yoga Nidra", videoId: "M0u9GST_j3s" },
-    { label: "Bhajan Devocional", videoId: "2bosouX_d8Y" },
-    { label: "Kundalini e Chakras", videoId: "EwQkfoKxRvo" },
+    { label: "Mantra OM", type: "om", icon: "🕉️" },
+    { label: "Sino Sagrado", type: "singing-bowl", icon: "🛕" },
+    { label: "Rio Ganges", type: "stream", icon: "🏞️" },
+    { label: "Fogo Ritual", type: "fire", icon: "🔥" },
   ],
   explorar: [
-    { label: "Para Iniciantes", videoId: "inpok4MKVLM" },
-    { label: "Para Ansiedade", videoId: "O-6f5wQXSu8" },
-    { label: "Para Dormir", videoId: "aEqlQvczMJQ" },
-    { label: "Gratidão e Bem-Estar", videoId: "sz7cpV7ERsM" },
+    { label: "Chuva Relaxante", type: "rain", icon: "🌧️" },
+    { label: "Ondas do Mar", type: "ocean", icon: "🌊" },
+    { label: "Floresta Tranquila", type: "forest", icon: "🌲" },
+    { label: "Noite Calma", type: "night", icon: "🌙" },
   ],
 };
 
@@ -71,10 +74,10 @@ const MeditationPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [selectedTradition, setSelectedTradition] = useState<string | null>(null);
-  const [selectedVideo, setSelectedVideo] = useState<MeditationVideo | null>(null);
+  const [selectedSound, setSelectedSound] = useState<MeditationSound | null>(null);
 
   const tradition = traditions.find((trad) => trad.id === selectedTradition);
-  const videos = selectedTradition ? meditationVideos[selectedTradition] || meditationVideos.explorar : [];
+  const sounds = selectedTradition ? meditationSounds[selectedTradition] || meditationSounds.explorar : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,14 +86,14 @@ const MeditationPage = () => {
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => {
-            if (selectedVideo) setSelectedVideo(null);
+            if (selectedSound) setSelectedSound(null);
             else if (selectedTradition) setSelectedTradition(null);
             else navigate("/");
           }}
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          {selectedVideo ? t("meditation.choose_theme") : selectedTradition ? t("home.choose_tradition") : t("nav.home")}
+          {selectedSound ? t("meditation.choose_theme") : selectedTradition ? t("home.choose_tradition") : t("nav.home")}
         </motion.button>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -100,9 +103,9 @@ const MeditationPage = () => {
           <p className="text-sm text-muted-foreground mb-8">
             {!selectedTradition
               ? t("meditation.choose_tradition")
-              : !selectedVideo
+              : !selectedSound
               ? `${t("meditation.choose_theme")} — ${tradition?.icon} ${t(`traditions.${tradition?.id}`)}`
-              : `${tradition?.icon} ${selectedVideo.label}`}
+              : `${tradition?.icon} ${selectedSound.label}`}
           </p>
         </motion.div>
 
@@ -128,7 +131,7 @@ const MeditationPage = () => {
                   <div>
                     <h3 className="font-display font-semibold text-foreground">{t(`traditions.${trad.id}`)}</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {meditationVideos[trad.id]?.length || 0} {t("meditation.meditations")}
+                      {meditationSounds[trad.id]?.length || 0} {t("meditation.meditations")}
                     </p>
                   </div>
                 </motion.button>
@@ -136,36 +139,26 @@ const MeditationPage = () => {
             </motion.div>
           )}
 
-          {selectedTradition && !selectedVideo && (
+          {selectedTradition && !selectedSound && (
             <motion.div
               key="themes"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-3"
+              className="grid grid-cols-1 gap-3 sm:grid-cols-2"
             >
-              {videos.map((v, i) => (
+              {sounds.map((s, i) => (
                 <motion.button
-                  key={v.videoId}
+                  key={s.type + i}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  onClick={() => setSelectedVideo(v)}
-                  className="flex w-full items-center gap-4 rounded-xl border border-border bg-card/50 p-4 text-left transition-all hover:border-primary/30 hover:bg-card/80 group"
+                  onClick={() => setSelectedSound(s)}
+                  className="flex items-center gap-4 rounded-xl border border-border bg-card/50 p-5 text-left transition-all hover:border-primary/30 hover:bg-card/80 group"
                 >
-                  <div className="relative w-28 shrink-0 overflow-hidden rounded-lg aspect-video bg-muted">
-                    <img
-                      src={`https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg`}
-                      alt={v.label}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
-                      <Play className="h-6 w-6 text-white fill-white" />
-                    </div>
-                  </div>
+                  <span className="text-3xl group-hover:scale-110 transition-transform">{s.icon}</span>
                   <div>
-                    <h3 className="font-display font-semibold text-foreground">{v.label}</h3>
+                    <h3 className="font-display font-semibold text-foreground">{s.label}</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {tradition?.icon} {t(`traditions.${tradition?.id}`)}
                     </p>
@@ -175,52 +168,35 @@ const MeditationPage = () => {
             </motion.div>
           )}
 
-          {selectedVideo && (
+          {selectedSound && (
             <motion.div
               key="player"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-4"
+              className="space-y-8"
             >
-              <div className="overflow-hidden rounded-2xl border border-border bg-black aspect-video">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${selectedVideo.videoId}?autoplay=1&rel=0`}
-                  title={selectedVideo.label}
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+              <MeditationPlayer
+                sound={selectedSound}
+                traditionIcon={tradition?.icon}
+                traditionLabel={t(`traditions.${tradition?.id}`)}
+              />
 
+              {/* Other sounds */}
               <div className="grid grid-cols-2 gap-3">
-                {videos
-                  .filter((v) => v.videoId !== selectedVideo.videoId)
-                  .map((v) => (
+                {sounds
+                  .filter((s) => s.type !== selectedSound.type || s.label !== selectedSound.label)
+                  .map((s, i) => (
                     <button
-                      key={v.videoId}
-                      onClick={() => setSelectedVideo(v)}
-                      className="flex items-center gap-3 rounded-xl border border-border bg-card/50 p-3 text-left transition-all hover:border-primary/30 group"
+                      key={s.type + i}
+                      onClick={() => setSelectedSound(s)}
+                      className="flex items-center gap-3 rounded-xl border border-border bg-card/50 p-3 text-left transition-all hover:border-primary/30"
                     >
-                      <div className="relative w-16 shrink-0 overflow-hidden rounded-lg aspect-video bg-muted">
-                        <img
-                          src={`https://img.youtube.com/vi/${v.videoId}/default.jpg`}
-                          alt={v.label}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                          <Play className="h-3 w-3 text-white fill-white" />
-                        </div>
-                      </div>
-                      <span className="text-xs font-medium text-foreground/80 line-clamp-2">{v.label}</span>
+                      <span className="text-2xl">{s.icon}</span>
+                      <span className="text-xs font-medium text-foreground/80 line-clamp-2">{s.label}</span>
                     </button>
                   ))}
               </div>
-
-              <p className="text-center text-[10px] text-muted-foreground/40">
-                {t("meditation.disclaimer")}
-              </p>
             </motion.div>
           )}
         </AnimatePresence>
