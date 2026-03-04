@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { BookOpen, MessageCircle, Heart, GitCompareArrows, Brain } from "lucide-react";
+import { BookOpen, MessageCircle, Heart, GitCompareArrows } from "lucide-react";
 
 const FeatureGrid = () => {
   const navigate = useNavigate();
@@ -10,7 +10,6 @@ const FeatureGrid = () => {
   const features = [
     { icon: BookOpen, title: t("features.library"), desc: t("features.library_desc"), route: "/biblioteca" },
     { icon: MessageCircle, title: t("features.chat"), desc: t("features.chat_desc"), route: "/chat/explorar" },
-    { icon: Brain, title: t("features.meditation"), desc: t("features.meditation_desc"), route: "/meditacao" },
     { icon: GitCompareArrows, title: t("features.compare"), desc: t("features.compare_desc"), route: "/comparar" },
     { icon: Heart, title: t("features.crisis"), desc: t("features.crisis_desc"), route: "/crise" },
   ];
